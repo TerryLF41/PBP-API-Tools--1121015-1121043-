@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"time"
 
 	"github.com/go-co-op/gocron"
@@ -37,4 +38,42 @@ func sendMail(user User, news Berita) {
 func getTodayNews() {
 	db := Connect()
 	defer db.Close()
+
+	today := time.Now()
+
+	query := `
+			SELECT * FROM berita 
+			WHERE tanggal = convert(date, ?, 102)`
+
+	rows, err := db.Query(query, today.Format("2006-01-02"))
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	var berita Berita
+	for rows.Next() {
+		if err := rows.Scan(&berita.ID, &berita.Tanggal, &berita.Title, &berita.Isi); err != nil {
+			log.Println(err)
+			return
+		} else {
+			query2 := `SELECT * FROM users`
+
+			rows2, err := db.Query(query2)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+
+			var user User
+			for rows2.Next() {
+				if err := rows.Scan(&user.ID, &user.Username, &user.Password, &user.Email); err != nil {
+					log.Println(err)
+					return
+				} else {
+					sendMail(user, berita)
+				}
+			}
+		}
+	}
 }
