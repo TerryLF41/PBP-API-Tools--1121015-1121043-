@@ -19,12 +19,12 @@ func runScheduler() {
 }
 
 // GoMail
-func sendMail(user User) {
+func sendMail(user User, news Berita) {
 	msg := gomail.NewMessage()
 	msg.SetHeader("From", "EMAIL ADMIN")
-	msg.SetHeader("To", "EMAIL USER")
-	msg.SetHeader("Subject", "TITLE BERITA")
-	msg.SetBody("text/html", "<p>ISI BERITA</p>")
+	msg.SetHeader("To", user.Email)
+	msg.SetHeader("Subject", news.Title)
+	msg.SetBody("text/html", "<p>"+news.Isi+"</p>")
 
 	n := gomail.NewDialer("smtp.gmail.com", 587, "EMAIL ADMIN", "PASSWORD EMAIL ADMIN")
 
@@ -32,4 +32,9 @@ func sendMail(user User) {
 	if err := n.DialAndSend(msg); err != nil {
 		panic(err)
 	}
+}
+
+func getTodayNews() {
+	db := connect()
+	defer db.Close()
 }
