@@ -35,6 +35,6 @@ func sendMail(user User, news Berita) {
 }
 
 func getTodayNews() {
-	db := connect()
+	db := Connect()
 	defer db.Close()
 }
