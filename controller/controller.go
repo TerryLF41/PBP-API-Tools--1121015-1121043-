@@ -19,7 +19,7 @@ func runScheduler() {
 }
 
 // GoMail
-func sendMail() {
+func sendMail(user User) {
 	msg := gomail.NewMessage()
 	msg.SetHeader("From", "EMAIL ADMIN")
 	msg.SetHeader("To", "EMAIL USER")
