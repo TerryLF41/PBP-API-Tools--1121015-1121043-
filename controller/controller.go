@@ -12,7 +12,7 @@ func runScheduler() {
 	schedule := gocron.NewScheduler(time.UTC)
 
 	schedule.Every(1).Days().Do(func() {
-		//Func Kirim Email
+		getTodayNews()
 	})
 
 	schedule.StartBlocking()
