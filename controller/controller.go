@@ -9,13 +9,13 @@ import (
 
 // GoCron
 func runScheduler() {
-	s := gocron.NewScheduler(time.UTC)
+	schedule := gocron.NewScheduler(time.UTC)
 
-	s.Every(1).Days().Do(func() {
+	schedule.Every(1).Days().Do(func() {
 		//Func Kirim Email
 	})
 
-	s.StartBlocking()
+	schedule.StartBlocking()
 }
 
 // GoMail
