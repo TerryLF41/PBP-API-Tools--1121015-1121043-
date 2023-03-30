@@ -10,6 +10,6 @@ type User struct {
 type Berita struct {
 	ID      int    `json:"id"`
 	Tanggal string `json:"tanggal"`
-	Title   string `json:"title"`
+	Judul   string `json:"judul"`
 	Isi     string `json:"isi"`
 }
