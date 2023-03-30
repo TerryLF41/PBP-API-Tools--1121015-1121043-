@@ -77,3 +77,8 @@ func getTodayNews() {
 		}
 	}
 }
+
+// Go Routines
+func sendAdvertisement() {
+
+}
