@@ -22,12 +22,12 @@ func runScheduler() {
 // GoMail
 func sendMail(user User, news Berita) {
 	msg := gomail.NewMessage()
-	msg.SetHeader("From", "EMAIL ADMIN")
+	msg.SetHeader("From", "testsakun41@gmail.com")
 	msg.SetHeader("To", user.Email)
 	msg.SetHeader("Subject", news.Judul)
 	msg.SetBody("text/html", "<p>"+news.Isi+"</p>")
 
-	n := gomail.NewDialer("smtp.gmail.com", 587, "EMAIL ADMIN", "PASSWORD EMAIL ADMIN")
+	n := gomail.NewDialer("smtp.gmail.com", 587, "testsakun41@gmail.com", "ABC_123456")
 
 	// Send the email
 	if err := n.DialAndSend(msg); err != nil {
