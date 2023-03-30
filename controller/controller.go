@@ -24,7 +24,7 @@ func sendMail(user User, news Berita) {
 	msg := gomail.NewMessage()
 	msg.SetHeader("From", "EMAIL ADMIN")
 	msg.SetHeader("To", user.Email)
-	msg.SetHeader("Subject", news.Title)
+	msg.SetHeader("Subject", news.Judul)
 	msg.SetBody("text/html", "<p>"+news.Isi+"</p>")
 
 	n := gomail.NewDialer("smtp.gmail.com", 587, "EMAIL ADMIN", "PASSWORD EMAIL ADMIN")
@@ -53,7 +53,7 @@ func getTodayNews() {
 
 	var berita Berita
 	for rows.Next() {
-		if err := rows.Scan(&berita.ID, &berita.Tanggal, &berita.Title, &berita.Isi); err != nil {
+		if err := rows.Scan(&berita.ID, &berita.Tanggal, &berita.Judul, &berita.Isi); err != nil {
 			log.Println(err)
 			return
 		} else {
