@@ -9,10 +9,10 @@ import (
 )
 
 // GoCron
-func runScheduler() {
+func RunScheduler() {
 	schedule := gocron.NewScheduler(time.UTC)
 
-	schedule.Every(1).Days().Do(func() {
+	schedule.Every(1).Day().Do(func() {
 		getTodayNews()
 	})
 
@@ -27,11 +27,12 @@ func sendMail(user User, news Berita) {
 	msg.SetHeader("Subject", news.Judul)
 	msg.SetBody("text/html", "<p>"+news.Isi+"</p>")
 
-	n := gomail.NewDialer("smtp.gmail.com", 587, "testsakun41@gmail.com", "ABC_123456")
+	n := gomail.NewDialer("smtp.gmail.com", 587, "if-21015@students.ithb.ac.id", "ABC_123456")
 
 	// Send the email
 	if err := n.DialAndSend(msg); err != nil {
-		panic(err)
+		log.Println(err)
+		return
 	}
 }
 
@@ -43,7 +44,7 @@ func getTodayNews() {
 
 	query := `
 			SELECT * FROM berita 
-			WHERE tanggal = convert(date, ?, 102)`
+			WHERE tanggal = ?`
 
 	rows, err := db.Query(query, today.Format("2006-01-02"))
 	if err != nil {
