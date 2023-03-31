@@ -16,7 +16,7 @@ func RunScheduler() {
 
 	schedule.Every(1).Day().Do(func() {
 		//Go Routines
-		go getTodayNews()
+		getTodayNews()
 		//Mock Redis Example
 		//go sendAdvertisement()
 	})
@@ -28,7 +28,7 @@ func RunScheduler() {
 // GoMail
 func sendMail(user User, news Berita) {
 	msg := gomail.NewMessage()
-	msg.SetHeader("From", "testsakun41@gmail.com")
+	msg.SetHeader("From", "if-21015@students.ithb.ac.id")
 	msg.SetHeader("To", user.Email)
 	msg.SetHeader("Subject", news.Judul)
 	msg.SetBody("text/html", "<p>"+news.Isi+"</p>")
@@ -75,7 +75,7 @@ func getTodayNews() {
 
 			var user User
 			for rows2.Next() {
-				if err := rows.Scan(&user.ID, &user.Username, &user.Password, &user.Email); err != nil {
+				if err := rows2.Scan(&user.ID, &user.Username, &user.Password, &user.Email); err != nil {
 					log.Println(err)
 					return
 				} else {
