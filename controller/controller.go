@@ -17,7 +17,8 @@ func RunScheduler() {
 	schedule.Every(1).Day().Do(func() {
 		//Go Routines
 		go getTodayNews()
-		go sendAdvertisement()
+		//Mock Redis Example
+		//go sendAdvertisement()
 	})
 
 	schedule.StartBlocking()
