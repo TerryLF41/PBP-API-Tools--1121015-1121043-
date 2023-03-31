@@ -3,6 +3,8 @@ package controller
 import (
 	"database/sql"
 	"log"
+
+	"github.com/redis/go-redis/v9"
 )
 
 func Connect() *sql.DB {
@@ -11,4 +13,9 @@ func Connect() *sql.DB {
 		log.Fatal()
 	}
 	return db
+}
+
+func ConnectRedis() *redis.Client {
+	rdb := redis.NewClient(&redis.Options{Addr: "localhost:6379", Password: "", DB: 0})
+	return rdb
 }

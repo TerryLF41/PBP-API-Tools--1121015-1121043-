@@ -4,6 +4,8 @@ import (
 	"log"
 	"time"
 
+	"context"
+
 	"github.com/go-co-op/gocron"
 	"gopkg.in/gomail.v2"
 )
@@ -13,10 +15,13 @@ func RunScheduler() {
 	schedule := gocron.NewScheduler(time.UTC)
 
 	schedule.Every(1).Day().Do(func() {
-		getTodayNews()
+		//Go Routines
+		go getTodayNews()
+		go sendAdvertisement()
 	})
 
 	schedule.StartBlocking()
+	//time.Sleep(10 * time.Second)
 }
 
 // GoMail
@@ -58,6 +63,7 @@ func getTodayNews() {
 			log.Println(err)
 			return
 		} else {
+
 			query2 := `SELECT * FROM users`
 
 			rows2, err := db.Query(query2)
@@ -79,7 +85,34 @@ func getTodayNews() {
 	}
 }
 
-// Go Routines
+// Go Redis
 func sendAdvertisement() {
+	var ctx = context.Background()
+	rdb := ConnectRedis()
+	db := Connect()
+	defer db.Close()
 
+	promoCode, err := rdb.Get(ctx, "promoCode").Result()
+	if err != nil {
+		panic(err)
+	}
+
+	query := `SELECT * FROM users`
+
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	today := time.Now()
+	berita := Berita{ID: 0, Tanggal: today.Format("2006-01-02"), Judul: "Todays Promo Code!", Isi: promoCode}
+	var user User
+	for rows.Next() {
+		if err := rows.Scan(&user.ID, &user.Username, &user.Password, &user.Email); err != nil {
+			log.Println(err)
+			return
+		} else {
+			sendMail(user, berita)
+		}
+	}
 }
